@@ -1,10 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import random
-import time
+# import time
 
 random.seed
+
 
 def main_title():
 
@@ -20,16 +21,17 @@ def main_title():
     print("                                                                     | $$                                                             ")                                  
     print("                                                                     |__/                                                             ")                                  
 
+
 def main_menu():
     print("1. Enter Game")
     print("2. Exit")
     print("\n")
-       
+
     valid = False
 
-    while valid == False:
+    while not valid:
         choice = int(input("Enter your selection: "))
-        
+
         if choice == 1:
             valid = True
             rpc_game()
@@ -40,9 +42,11 @@ def main_menu():
         else:
             valid = False
 
+
 def bot_rpc():
     return random.choice(['r', 'p', 'c'])
-    
+
+
 def shifumi(user_score):
     bot = bot_rpc()
     user_rpc = input("\nMake your choice human: ")
@@ -59,31 +63,33 @@ def shifumi(user_score):
     else:
         print("You lose!")
         return user_score
-    
+
 
 def rpc_game():
-    
+
     go_on = True
 
     while go_on:
         print("\n\n=========== Game On! ===========")
         user_score = 0
-        
+
         for i in range(0, 3):
             user_score = shifumi(user_score)
-    
+
         if user_score > 1:
             print("\nYou're the winner... How is it that I, a fantastic machine, lost against you...")
 
         else:
             print("\nI win, you pathetic human")
-                
+
         go_on = int(input("Try again? "))
         print("\n================================\n")
+
 
 def game():
     main_title()
     main_menu()
+
 
 print("\n")
 game()
