@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 def hangman_state1():
     print("============ ")
 

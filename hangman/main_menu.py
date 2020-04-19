@@ -2,7 +2,6 @@
 
 import sys
 import hangman
-import get_random_word
 
 def main_title():
 
@@ -28,7 +27,7 @@ def main_menu():
 
         try:
             if user_choice == 1:
-                hangman()
+                hangman.hangman()
 
             elif user_choice == 2:
                 sys.exit(0)
@@ -43,3 +42,5 @@ def main_menu():
 def main():
     main_title()
     main_menu()
+
+main()

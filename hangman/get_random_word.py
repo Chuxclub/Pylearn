@@ -20,5 +20,5 @@ def get_random_word():
             f.readline()
 
         chosen_word = f.readline()
-
+        
     return chosen_word
