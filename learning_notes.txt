@@ -1,0 +1,17 @@
+Switch cases in python:
+
+def hangman_states(case):
+    switcher = {
+        1: hangman_state1,
+        2: hangman_state2,
+        3: hangman_state3,
+        4: hangman_state4,
+        5: hangman_state5,
+        6: hangman_state6,
+        7: hangman_state7,
+        8: hangman_state8
+    }
+
+    return switcher.get(case, "State doesn't exist")()
+
+Switch cases in Python don't exist. But we can use dictionaries to replace them
