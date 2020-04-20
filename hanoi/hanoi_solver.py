@@ -39,6 +39,3 @@ def print_solution(solution_list):
     
     for i in range(0, list_max_index) :
         print(solution_list[i])
-
-# print(create_hanoi_tower(5))
-print_solution(hanoi_solver(5))
