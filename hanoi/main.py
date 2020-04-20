@@ -51,6 +51,11 @@ def main_menu():
 def hanoi_game():
     solution = hanoi_solver.hanoi_solver(5)
 
+    user_input = input("Enter your movement: ")
+    list(user_input)
+
+    
+
     
     
     
