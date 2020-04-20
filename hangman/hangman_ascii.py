@@ -97,6 +97,3 @@ def hangman_saved():
     print("\\o/")
     print(" | ")
     print("/ \\")
-
-
-hangman_states(7)
