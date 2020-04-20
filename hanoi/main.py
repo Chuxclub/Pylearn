@@ -4,6 +4,8 @@ import time
 import sys
 import os
 import hanoi_solver
+import hanoi_ascii
+import towers_manipulation
 
 
 def main_title():
@@ -29,6 +31,7 @@ def main_title():
 def main_menu():
     print("1. Play game")
     print("2. Exit")
+    print("")
 
     while True:
         user_choice = input("Make your selection: ")
@@ -49,18 +52,29 @@ def main_menu():
 
 
 def hanoi_game():
-    solution = hanoi_solver.hanoi_solver(5)
+    tower1 = hanoi_solver.create_hanoi_tower(5)
+    tower2 = [0, 0, 0, 0, 0]
+    tower3 = [0, 0, 0, 0, 0]
+    towers = [tower1, tower2, tower3]
+    # solution = hanoi_solver.hanoi_solver(5)
 
-    user_input = input("Enter your movement: ")
-    list(user_input)
+    os.system("clear")
+    hanoi_ascii.print_towers(towers)
+    print("\n")
 
-    
+    while True:
+        user_input = input("Enter your movement: ")
+        list(user_input)
+        print(user_input)
 
-    
-    
-    
+        towers = towers_manipulation.move_ring(user_input, towers)
+        os.system("clear")
+        hanoi_ascii.print_towers(towers)
+        print("\n")
+
+
 print("")
 main_title()
 print("\n")
-
-
+main_menu()
+print("\n")

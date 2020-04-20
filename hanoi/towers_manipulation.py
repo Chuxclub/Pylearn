@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-import hanoi_solver
-import hanoi_ascii
+# import hanoi_solver
+# import hanoi_ascii
+# import time
 
 
 def search_ring(ring_id, towers):
@@ -11,32 +12,30 @@ def search_ring(ring_id, towers):
     chosen_ring = ring_id
 
     while True:
+
         try:
-            if chosen_ring < 0 or chosen_ring > towers_height:
+            if chosen_ring < 1 or chosen_ring > towers_height:
                 raise ValueError("Ring doesn't exist")
 
             else:
-                for i in range(0, nb_towers):
+                for i in range(nb_towers):
 
-                    for j in range(0, towers_height):
-
-                        if towers[i][j] == ring_id:
-                            return i
+                    for j in range(towers_height):
+                        if towers[i][j] == chosen_ring:
+                            return [i, j]
 
         except ValueError:
-            chosen_ring = input("Provided ring id is wrong, please enter a valid ring id: ")
+            chosen_ring = int(input("Provided ring id is wrong, please enter a valid ring id: "))
 
 
 def search_place_to_insert(tower):
 
     res = -1
 
-    for i in tower:
+    for i in range(len(tower)-1, 0, -1):
 
         if tower[i] == 0:
-            res = (i + len(tower) - 1) % len(tower)
-
-    assert res >= 0
+            return i
 
     return res
 
@@ -45,11 +44,11 @@ def search_place_to_insert(tower):
 # followed by the id of the tower. E.g (1, 3) means
 # ring 1 to tower 3
 
-def move_ring(user_input_tuple, towers):
+def raw_move_ring(user_input_tuple, towers):
 
     ring_to_move = int(user_input_tuple[0])
     targeted_tower = int(user_input_tuple[1]) - 1
-    src_tower = int(search_ring(ring_to_move, towers))
+    src_tower = int(search_ring(ring_to_move, towers)[0])
     new_place = search_place_to_insert(towers[targeted_tower])
 
     towers[targeted_tower].remove(towers[targeted_tower][0])
@@ -59,6 +58,31 @@ def move_ring(user_input_tuple, towers):
 
     return towers
 
+
+def move_ring(user_input_tuple, towers):
+
+    ring_to_move = int(user_input_tuple[0])
+    summit = 0
+    ground = len(towers[0])-1
+    src_place = search_ring(ring_to_move, towers)
+    src_tower = src_place[0]
+    src_line = src_place[1]
+    targeted_tower = int(user_input_tuple[1])-1
+    targeted_place = search_place_to_insert(towers[targeted_tower])
+
+    if src_line > summit and towers[src_tower][src_line-1] != 0:
+        print(src_line)
+        return towers
+
+    elif targeted_place < ground and ring_to_move > towers[targeted_tower][targeted_place+1]:
+        return towers
+
+    else:
+        return raw_move_ring(user_input_tuple, towers)
+
+
+
+# ===================== TEST ZONE  ===================== #
 
 # tower1 = hanoi_solver.create_hanoi_tower(5)
 # tower2 = [0, 0, 0, 0, 0]
@@ -71,3 +95,21 @@ def move_ring(user_input_tuple, towers):
 # towers = move_ring(("1", "3"), towers)
 # hanoi_ascii.print_towers([tower1, tower2, tower3])
 # print("")
+
+# towers = move_ring(("2", "2"), towers)
+# hanoi_ascii.print_towers([tower1, tower2, tower3])
+# print("")
+
+# towers = move_ring(("3", "3"), towers)
+# hanoi_ascii.print_towers([tower1, tower2, tower3])
+# print("")
+
+# towers = move_ring(("1", "2"), towers)
+# hanoi_ascii.print_towers([tower1, tower2, tower3])
+# print("")
+
+# towers = move_ring(("3", "2"), towers)
+# hanoi_ascii.print_towers([tower1, tower2, tower3])
+# print("")
+
+# ====================================================== #
