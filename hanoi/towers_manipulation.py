@@ -5,6 +5,16 @@
 # import time
 
 
+def create_no_ring_hanoi_tower(size):
+
+    res_tower = []
+
+    for i in range(size):
+        res_tower.append(0)
+
+    return res_tower
+
+
 def search_ring(ring_id, towers):
 
     nb_towers = len(towers)
