@@ -2,7 +2,7 @@
 
 # import hanoi_solver
 # import hanoi_ascii
-# import time
+import time
 
 
 def create_no_ring_hanoi_tower(size):
@@ -89,6 +89,27 @@ def move_ring(user_input_tuple, towers):
     elif targeted_place < ground and ring_to_move > towers[targeted_tower][targeted_place+1]:
         return towers
 
+    elif src_tower == targeted_tower:
+        return towers
+
     else:
         user_input_tuple = [ring_to_move, targeted_tower]
         return raw_move_ring(user_input_tuple, towers)
+
+
+def translate_tower_index(user_input):
+
+    try:
+
+        return {"A": 1,
+                "a": 1,
+                "1": 1,
+                "B": 2,
+                "b": 2,
+                "2": 2,
+                "C": 3,
+                "c": 3,
+                "3": 3}[user_input]
+
+    except KeyError:
+        pass

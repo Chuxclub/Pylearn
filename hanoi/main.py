@@ -50,6 +50,7 @@ def main_menu():
                 return 0
 
             elif user_choice in ("n", "N", "0", "non", "Non", "non", "Non", "exit", "Exit"):
+                os.system("clear")
                 sys.exit(0)
 
             else:
@@ -57,24 +58,6 @@ def main_menu():
 
         except ValueError:
             pass
-
-
-def translate_tower_index(user_input):
-
-    try:
-
-        return {"A": 1,
-                "a": 1,
-                "1": 1,
-                "B": 2,
-                "b": 2,
-                "2": 2,
-                "C": 3,
-                "c": 3,
-                "3": 3}[user_input]
-
-    except KeyError:
-        pass
 
 
 def translate_difficulty_level(user_input):
@@ -96,6 +79,59 @@ def remove_whitespace(user_input):
     return user_input
 
 
+def endgame_menu(towers, difficulty_level, moves_counter):
+
+    towers_size = translate_difficulty_level(difficulty_level)
+    expected_moves = 2**towers_size - 1
+
+    print("\n==========================================================")
+    print("============ Congratulations! You won :D !  ==============")
+    print("==========================================================\n")
+
+    print("You made "
+          + str(moves_counter)
+          + " moves out of the "
+          + str(expected_moves)
+          + " minimum move! \n")
+
+    while True:
+        try:
+            go_on = input("Do you want to play solution? ")
+
+            if go_on in ("y", "Y", "o", "O", "yes", "Yes", "oui", "Oui"):
+                animation_speed = hanoi_solver.solution_animation_speed(difficulty_level)
+                os.system("clear")
+                hanoi_solver.play_solution(towers_size, animation_speed)
+                break
+
+            elif go_on in ("n", "N", "no", "No", "non", "Non"):
+                break
+
+            else:
+                raise ValueError
+
+        except ValueError:
+            pass
+
+    while True:
+        try:
+            go_on = input("\nDo you want to go back to main menu? ")
+
+            if go_on in ("y", "Y", "o", "O", "yes", "Yes", "oui", "Oui"):
+                os.system("clear")
+                return 0
+
+            elif go_on in ("n", "N", "no", "No", "non", "Non"):
+                os.system("clear")
+                sys.exit(0)
+
+            else:
+                raise ValueError
+
+        except ValueError:
+            pass
+
+
 def hanoi_game(difficulty_level):
 
     towers_size = translate_difficulty_level(difficulty_level)
@@ -104,55 +140,49 @@ def hanoi_game(difficulty_level):
     tower2 = towers_manipulation.create_no_ring_hanoi_tower(towers_size)
     tower3 = towers_manipulation.create_no_ring_hanoi_tower(towers_size)
     towers = [tower1, tower2, tower3]
-    solution = [] + tower1
+    win_condition = [] + tower1
+    moves_counter = 0
 
     os.system("clear")
     print("\n")
     hanoi_ascii.print_towers(towers)
-    print("\n")
+    print("")
 
     while True:
 
-        if towers[1] == solution:
-            print("\n==========================================================")
-            print("============ Congratulations! You won :D !  ==============")
-            print("==========================================================")
-
-            while True:
-                try:
-                    go_on = input("\nDo you want to go back to main menu? ")
-
-                    if go_on in ("y", "Y", "o", "O", "yes", "Yes", "oui", "Oui"):
-                        os.system("clear")
-                        return 0
-
-                    elif go_on in ("n", "N", "no", "No", "non", "Non"):
-                        sys.exit(0)
-
-                    else:
-                        raise ValueError
-
-                except ValueError:
-                    pass
+        if towers[1] == win_condition:
+            return endgame_menu(towers, difficulty_level, moves_counter)
 
         user_input = input("Enter your movement: ")
 
         try:
-            if not user_input:
-                raise ValueError
-
-            elif user_input in ("q", "Q", "l", "L", "quit",
+            if user_input in ("q", "Q", "l", "L", "quit",
                                 "Quit", "exit", "Exit", "leave", "Leave"):
+                os.system("clear")
                 sys.exit(0)
 
+            elif user_input == "s":
+                animation_speed = hanoi_solver.solution_animation_speed(difficulty_level)
+                hanoi_solver.play_solution(towers_size, animation_speed)
+                os.system("clear")
+                print("\n")
+                hanoi_ascii.print_towers(towers)
+                print("")
+                continue
+
+            elif len(user_input) != 2:
+                raise ValueError
+
             user_input = remove_whitespace(user_input)
-            res_list = [user_input[0], translate_tower_index(user_input[1])]
+            res_list = [user_input[0], towers_manipulation.translate_tower_index(user_input[1])]
 
             if int(res_list[0]) in range(1, towers_size+1) and res_list[1] in (1, 2, 3):
+                moves_counter += 1
                 towers = towers_manipulation.move_ring(res_list, towers)
                 os.system("clear")
-                hanoi_ascii.print_towers(towers)
                 print("\n")
+                hanoi_ascii.print_towers(towers)
+                print("")
 
             else:
                 raise ValueError
