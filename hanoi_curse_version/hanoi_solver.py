@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import towers_manipulation
-import os
 import hanoi_ascii
-import time
+
+from curses import napms
 
 
 def create_hanoi_tower(tower_size):
@@ -48,16 +48,16 @@ def print_solution(solution_list):
 
 def solution_animation_speed(difficulty_level):
 
-    return {"1": 1,
-            "2": 1,
-            "3": 1,
-            "4": 0.3,
-            "5": 0.1,
-            "6": 0.05,
-            "7": 0.01}[difficulty_level]
+    return {"1": 1000,
+            "2": 1000,
+            "3": 1000,
+            "4": 300,
+            "5": 100,
+            "6": 50,
+            "7": 10}[difficulty_level]
 
 
-def play_solution(towers_size, speed):
+def play_solution(scr, towers_size, speed):
 
     tower1 = create_hanoi_tower(towers_size)
     tower2 = towers_manipulation.create_no_ring_hanoi_tower(towers_size)
@@ -67,12 +67,15 @@ def play_solution(towers_size, speed):
     solution_length = 2**towers_size - 1
     solution_recipe = hanoi_solver(towers_size)
 
-    os.system("clear")
-    print("\n")
-    hanoi_ascii.print_towers(towers)
-    print("")
-    time.sleep(speed)
-    os.system("clear")
+    scr.erase()
+
+    scr.addstr("\n\n")
+    hanoi_ascii.print_towers(scr, towers)
+    scr.addstr("\n")
+
+    scr.refresh()
+    napms(speed)
+    scr.erase()
 
     for i in range(solution_length):
 
@@ -80,18 +83,24 @@ def play_solution(towers_size, speed):
             targeted_tower = towers_manipulation.translate_tower_index(solution_recipe[i][2])
             ring_move = [solution_recipe[i][0], targeted_tower]
             towers_manipulation.move_ring(ring_move, towers)
-            print("\n")
-            hanoi_ascii.print_towers(towers)
-            print("")
-            time.sleep(2)
-            os.system("clear")
+
+            scr.addstr("\n\n")
+            hanoi_ascii.print_towers(scr, towers)
+            scr.addstr("\n")
+
+            scr.refresh()
+            napms(2000)
+            scr.erase()
 
         else:
             targeted_tower = towers_manipulation.translate_tower_index(solution_recipe[i][2])
             ring_move = [solution_recipe[i][0], targeted_tower]
             towers_manipulation.move_ring(ring_move, towers)
-            print("\n")
-            hanoi_ascii.print_towers(towers)
-            print("")
-            time.sleep(speed)
-            os.system("clear")
+
+            scr.addstr("\n\n")
+            hanoi_ascii.print_towers(scr, towers)
+            scr.addstr("\n")
+
+            scr.refresh()
+            napms(speed)
+            scr.erase()

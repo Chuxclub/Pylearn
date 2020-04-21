@@ -161,6 +161,10 @@ def hanoi_game(difficulty_level):
                 os.system("clear")
                 sys.exit(0)
 
+            elif user_input in ("b", "B", "back", "Back", "r", "R", "return"):
+                os.system("clear")
+                return 0
+
             elif user_input == "s":
                 animation_speed = hanoi_solver.solution_animation_speed(difficulty_level)
                 hanoi_solver.play_solution(towers_size, animation_speed)
@@ -194,6 +198,7 @@ def hanoi_game(difficulty_level):
 def main():
 
     while True:
+        os.system("clear")
         print("")
         main_title()
         print("\n")
