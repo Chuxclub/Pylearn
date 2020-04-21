@@ -35,3 +35,10 @@ Slice from front:  :   1   2   3   4   5   :    a[-2]==4
 Slice from rear:   :  -5  -4  -3  -2  -1   :
                                                 b=a[:]
                                                 b==[0,1,2,3,4,5] (shallow copy of a)
+
+
+Using global variables: 
+
+1. Declare variable
+2. In local scope, statement global <var>
+3. Use variable...

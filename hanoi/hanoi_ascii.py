@@ -4,46 +4,77 @@
 import hanoi_solver
 
 
-def create_ring(ind, size):
+def create_ring(size, max_size):
+
+    res_ring = []
+    middle = max_size
+    fst_bracket = max_size - size
+    lst_bracket = max_size + size
 
     if size == 0:
-        res = [" "]
-        res.append(" " * 2*ind)
-        res.append(" ")
-        return res
+        for i in range(2*max_size+1):
+            res_ring.append(" ")
 
     else:
-        res = ["<"]
 
-        for i in range(0, 2*size):
-            res.append("-")
+        for i in range(2*max_size+1):
 
-        res.append(">")
+            if i == fst_bracket:
+                res_ring.append("<")
 
-        return res
+            elif i == middle and size > 1:
+                res_ring.append(str(size))
 
+            elif i > fst_bracket and i < lst_bracket:
+                res_ring.append("-")
 
-def print_tower(tower):
+            elif i == lst_bracket:
+                res_ring.append(">")
 
-    last_ring = len(tower)
+            else:
+                res_ring.append(" ")
 
-    for i in range(0, last_ring):
-        print(" " * (last_ring - i) + "".join(create_ring(tower[i])))
+    return res_ring
 
 
 # All towers must have the same size for this function to work
 # Which means that if there's no ring: 0 is chosen
 
+def print_floor(max_size):
+
+    res_floor = []
+
+    for i in range((2*max_size+1)*3 + 2):
+
+        if i == max_size:
+            res_floor.append("A")
+
+        elif i == (2*max_size+1)+1+max_size:
+            res_floor.append("B")
+
+        elif i == (2*max_size+1)*2+2+max_size:
+            res_floor.append("C")
+
+        else:
+            res_floor.append("=")
+
+    return res_floor
+
+
 def print_towers(towers):
 
     nb_towers = len(towers)
-    last_ring = len(towers[0])
+    max_ring = len(towers[0])
+    res_ring_line = []
 
-    for j in range(0, last_ring):
-
-        print("")
+    for j in range(0, max_ring):
 
         for i in range(0, nb_towers):
-            print(" " * (last_ring - j)
-                  + "".join(create_ring(j+1, towers[i][j]))
-                  + " " * (last_ring - j), end="")
+
+            res_ring_line.extend(create_ring(towers[i][j], max_ring))
+            res_ring_line.append(" ")
+
+        print("".join(res_ring_line))
+        res_ring_line = []
+
+    print("".join(print_floor(max_ring)))

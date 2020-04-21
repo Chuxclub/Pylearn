@@ -22,7 +22,7 @@ def search_ring(ring_id, towers):
 
                     for j in range(towers_height):
                         if towers[i][j] == chosen_ring:
-                            return [i, j]
+                            return [i, j, chosen_ring]
 
         except ValueError:
             chosen_ring = int(input("Provided ring id is wrong, please enter a valid ring id: "))
@@ -32,7 +32,7 @@ def search_place_to_insert(tower):
 
     res = -1
 
-    for i in range(len(tower)-1, 0, -1):
+    for i in range(len(tower)-1, -1, -1):
 
         if tower[i] == 0:
             return i
@@ -47,7 +47,7 @@ def search_place_to_insert(tower):
 def raw_move_ring(user_input_tuple, towers):
 
     ring_to_move = int(user_input_tuple[0])
-    targeted_tower = int(user_input_tuple[1]) - 1
+    targeted_tower = int(user_input_tuple[1])
     src_tower = int(search_ring(ring_to_move, towers)[0])
     new_place = search_place_to_insert(towers[targeted_tower])
 
@@ -64,52 +64,21 @@ def move_ring(user_input_tuple, towers):
     ring_to_move = int(user_input_tuple[0])
     summit = 0
     ground = len(towers[0])-1
+
     src_place = search_ring(ring_to_move, towers)
     src_tower = src_place[0]
     src_line = src_place[1]
+    ring_to_move = src_place[2]
+
     targeted_tower = int(user_input_tuple[1])-1
     targeted_place = search_place_to_insert(towers[targeted_tower])
 
     if src_line > summit and towers[src_tower][src_line-1] != 0:
-        print(src_line)
         return towers
 
     elif targeted_place < ground and ring_to_move > towers[targeted_tower][targeted_place+1]:
         return towers
 
     else:
+        user_input_tuple = [ring_to_move, targeted_tower]
         return raw_move_ring(user_input_tuple, towers)
-
-
-
-# ===================== TEST ZONE  ===================== #
-
-# tower1 = hanoi_solver.create_hanoi_tower(5)
-# tower2 = [0, 0, 0, 0, 0]
-# tower3 = [0, 0, 0, 0, 0]
-
-# towers = [tower1, tower2, tower3]
-# hanoi_ascii.print_towers(towers)
-# print("")
-
-# towers = move_ring(("1", "3"), towers)
-# hanoi_ascii.print_towers([tower1, tower2, tower3])
-# print("")
-
-# towers = move_ring(("2", "2"), towers)
-# hanoi_ascii.print_towers([tower1, tower2, tower3])
-# print("")
-
-# towers = move_ring(("3", "3"), towers)
-# hanoi_ascii.print_towers([tower1, tower2, tower3])
-# print("")
-
-# towers = move_ring(("1", "2"), towers)
-# hanoi_ascii.print_towers([tower1, tower2, tower3])
-# print("")
-
-# towers = move_ring(("3", "2"), towers)
-# hanoi_ascii.print_towers([tower1, tower2, tower3])
-# print("")
-
-# ====================================================== #
