@@ -47,6 +47,7 @@ def main_menu():
             if user_choice in ("1", "2", "3", "4", "5", "6", "7"):
                 os.system("clear")
                 hanoi_game(user_choice)
+                return 0
 
             elif user_choice in ("n", "N", "0", "non", "Non", "non", "Non", "exit", "Exit"):
                 sys.exit(0)
@@ -103,7 +104,7 @@ def hanoi_game(difficulty_level):
     tower2 = towers_manipulation.create_no_ring_hanoi_tower(towers_size)
     tower3 = towers_manipulation.create_no_ring_hanoi_tower(towers_size)
     towers = [tower1, tower2, tower3]
-    # solution = hanoi_solver.hanoi_solver(5)
+    solution = [] + tower1
 
     os.system("clear")
     print("\n")
@@ -111,6 +112,29 @@ def hanoi_game(difficulty_level):
     print("\n")
 
     while True:
+
+        if towers[1] == solution:
+            print("\n==========================================================")
+            print("============ Congratulations! You won :D !  ==============")
+            print("==========================================================")
+
+            while True:
+                try:
+                    go_on = input("\nDo you want to go back to main menu? ")
+
+                    if go_on in ("y", "Y", "o", "O", "yes", "Yes", "oui", "Oui"):
+                        os.system("clear")
+                        return 0
+
+                    elif go_on in ("n", "N", "no", "No", "non", "Non"):
+                        sys.exit(0)
+
+                    else:
+                        raise ValueError
+
+                except ValueError:
+                    pass
+
         user_input = input("Enter your movement: ")
 
         try:
@@ -137,8 +161,14 @@ def hanoi_game(difficulty_level):
             print("Invalid movement!")
 
 
-print("")
-main_title()
-print("\n")
-main_menu()
-print("\n")
+def main():
+
+    while True:
+        print("")
+        main_title()
+        print("\n")
+        main_menu()
+        print("\n")
+
+
+main()
