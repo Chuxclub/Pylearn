@@ -9,6 +9,20 @@ import towers_manipulation
 from input_parsers import *
 
 
+# Author: Florian Legendre
+#
+# What: Prints the title of the program on launch with a small animation
+#
+# How : Animation is made thanks to calls of the sleep function in time library
+#
+# Why: As the program sleeps regularly the title is slowly revealed giving the "animated"
+#      effect. Title is centered thanks to the .center() string method and terminal width
+#      variable collected throught get_terminal_size() function in the os library.
+#
+# Complexity (time): O(1)
+#
+# Self-Criticism: /
+
 def main_title():
     w, h = os.get_terminal_size()
     print(r"__/\\\________/\\\__________________________________________________        ".center(w))
@@ -29,6 +43,20 @@ def main_title():
     time.sleep(0.05)
     print(r"        _\///________\///___\////////\//__\///____\///_____\/////_____\///__".center(w))
 
+
+# Author: Florian Legendre
+#
+# What: Brings up the main menu with the prints and while/exception loop
+#       for filtering allowed inputs
+#
+# How : \
+#
+# Why: Divide and conquer -> here, more readibility thanks to division
+#
+# Complexity (time): Hard to evaluate if hanoi_game() is played. O(1)
+#                    in any other case
+#
+# Self-Criticism: \
 
 def main_menu():
     w, h = os.get_terminal_size()
@@ -65,6 +93,26 @@ def main_menu():
             pass
 
 
+# Author: Florian Legendre
+#
+# What: Brings up a menu when the game is over with the possibility
+#       to choose between watching the solution to do better next time
+#       or going back to the main menu
+#
+# How : Exceptions allows controlling the undesired inputs, those which
+#       don't match the inputs indicated in the previous 'if' conditions
+#       statements. Going back to the main menu is made thanks to a 0 returned
+#       as this 0 is caught by another return in hanoi_game() hence bringing back
+#       the main_menu() where hanoi_game() was initially launched
+#
+# Why: \
+#
+# Complexity (time): If the animation is played -> O(n²) as the hanoi_solver has
+#                    quadratic complexity
+#
+# Self-Criticism: The code looks a bit messy. I'm not sure what I could do to improve
+#                 readibility
+
 def endgame_menu(towers, difficulty_level, moves_counter):
 
     towers_size = translate_difficulty_level(difficulty_level)
@@ -78,6 +126,7 @@ def endgame_menu(towers, difficulty_level, moves_counter):
     print("============ Congratulations! You won :D !  ==============".center(w))
     print("==========================================================".center(w))
 
+    print("test")
     print("\n\n")
     print(("You made "
           + str(moves_counter)
@@ -124,6 +173,45 @@ def endgame_menu(towers, difficulty_level, moves_counter):
         except ValueError:
             pass
 
+
+# Author: Florian Legendre
+#
+# What: Brings up the hanoi game loop which is => input > parse input
+#       > system applies input > etc. It's basically the core game function
+#
+# How : Here I say "parse input" because the user can enter any string
+#       and the game will analyze this string and make the appropriate
+#       operations. Parsing is made in <input_parsers> thanks to
+#       input_parse() function.
+#
+#       Before the input parsing a simple loop
+#       checks if an authorized command has been entered which allows
+#       leaving the game, playing the solution animation  and such.
+#       As moving a ring requires at least two information (ring_id and
+#       targeted_tower_id), a first check of an impossible input is done
+#       through len(user_input) < 2 condition.
+#
+#       input_parse() returns a list consisting of a ring_id and a
+#       targeted_tower_id which is a string. This last string is converted into
+#       an int for the simplicity of the code. If the parser finds an error
+#       it returns impossible ids in this game such as -1, -1. 
+#
+#       Finally, after the input is parsed I check whether or not it corresponds
+#       to an existing tower or ring. There are always three towers named 1, 2, 3
+#       as ints. An empty tower (no ring) is a tower. So if it catches -1, -1 it
+#       immediately acknowledges the error and sends an exception invalidating the movement.
+#
+#       End of the game is detected thanks to tower2 comparison with initial state of tower1
+#       saved in the win_condition variable. Moves_counter simply allows to let the player
+#       know in the game menu whether or not they found the optimal solution.
+#       Difficulty_level affects the heights of the towers.
+#
+# Why: \
+#
+# Complexity (time): Depends on many factors...
+#
+# Self-Criticism: This way of parsing input is messy or at least could be divided in many
+#                 functions
 
 def hanoi_game(difficulty_level):
 
@@ -188,6 +276,20 @@ def hanoi_game(difficulty_level):
             print("Invalid movement!")
 
 
+# Author: Florian Legendre
+#
+# What: Launches the Home menu the game with its title and options
+#
+# How : Terminal is cleared thanks to the os.system("clear") which
+#       simply calls the "clear" in the source terminal in which the
+#       program is executed. The rest of this function is fairly self-explanatory.
+#
+# Why: \
+#
+# Complexity (time): Depends on many factors...
+#
+# Self-Criticism: \
+
 def main():
 
     while True:
@@ -198,5 +300,9 @@ def main():
         main_menu()
         print("\n")
 
+
+# ================================== #
+# Entry point of the program is here #
+# ================================== #
 
 main()

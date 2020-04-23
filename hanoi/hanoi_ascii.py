@@ -4,6 +4,29 @@
 import os
 
 
+# Author: Florian Legendre
+#
+# What: Returns a list containing the characters corresponding to a ring.
+#       This list will be concatenated with the other rings of the same line
+#       in print_towers() below and print as such.
+#
+# How : In order to always have then same length, whitespaces fill the list
+#       corresponding on the size of the ring.
+#
+#       For example: if ring_size is 0 (size parameter here), then the list only has
+#       whitespaces in it. If the ring_size is above 0 then if fills the list with the
+#       appropriate characters.
+#
+#       All the lists (e.g rings) have the same size based on the maximum ring size which
+#       also happens to 2 times the size of the towers + 1... For example: my towers have height
+#       of 3 lines, then my maximum ring has a size of 7 characters <----->
+#
+# Why: \
+#
+# Complexity (time): O(2*tower_size)
+#
+# Self-Criticism: \
+
 def create_ring(size, max_size):
 
     res_ring = []
@@ -37,6 +60,18 @@ def create_ring(size, max_size):
     return res_ring
 
 
+# Author: Florian Legendre
+#
+# What: Same idea as above but for the floor ====A====B====C==== below the towers
+#
+# How : See above
+#
+# Why: \
+#
+# Complexity (time): O(2*towers_size)
+#
+# Self-Criticism: \
+
 # All towers must have the same size for this function to work
 # Which means that if there's no ring: 0 is chosen
 
@@ -60,6 +95,21 @@ def print_floor(max_size):
 
     return res_floor
 
+
+# Author: Florian Legendre
+#
+# What: Concatenates all the lists produced byt the functions above
+#       and print the result on the screen line by line thanks to a
+#       for loop from top to bottom.
+#
+# How : The floor is printed out and after the loop as its size is constant and
+#       thus being more simple to produce. + It's on the bottom.
+#
+# Why: \
+#
+# Complexity (time): O(towers_size²)
+#
+# Self-Criticism: \
 
 def print_towers(towers):
 
