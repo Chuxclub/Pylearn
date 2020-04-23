@@ -4,65 +4,69 @@ import sys
 import hanoi_solver
 import hanoi_ascii
 import towers_manipulation
+import os
+import subprocess
+
+from pretty_term import print_menu
+from curses import *
+
+def main_title(scr):
+    h, w = scr.getmaxyx()
+
+    scr.addstr(3, w//2 - 40, "__/\\\\\\________/\\\\\\__________________________________________________        ")
+    napms(100)
+    scr.refresh()
+    scr.addstr(4, w//2 - 40, " _\\/\\\\\\_______\\/\\\\\\__________________________________________________       ")
+    napms(100)
+    scr.refresh()
+    scr.addstr(5, w//2 - 40, "  _\\/\\\\\\_______\\/\\\\\\_____________________________________________/\\\\\\_      ")
+    napms(100)
+    scr.refresh()
+    scr.addstr(6, w//2 - 40, "   _\\/\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\__/\\\\\\\\\\\\\\\\\\_____/\\\\/\\\\\\\\\\\\_______/\\\\\\\\\\____\\///__     ")
+    napms(100)
+    scr.refresh()
+    scr.addstr(7, w//2 - 40, "    _\\/\\\\\\/////////\\\\\\_\\////////\\\\\\___\\/\\\\\\////\\\\\\____/\\\\\\///\\\\\\___/\\\\\\_    ")
+    napms(100)
+    scr.refresh()
+    scr.addstr(8, w//2 - 40, "     _\\/\\\\\\_______\/\\\\\\___/\\\\\\\\\\\\\\\\\\\\__\\/\\\\\\__\\//\\\\\\__/\\\\\\__\//\\\\\\_\\/\\\\\\_   ")
+    napms(100)
+    scr.refresh()
+    scr.addstr(9, w//2 - 40, "      _\\/\\\\\\_______\\/\\\\\\__/\\\\\\/////\\\\\\__\\/\\\\\\___\\/\\\\\\_\\//\\\\\\__/\\\\\\__\\/\\\\\\_  ")
+    napms(100)
+    scr.refresh()
+    scr.addstr(10, w//2 - 40, "       _\\/\\\\\\_______\\/\\\\\\_\\//\\\\\\\\\\\\\\\\/\\\\_\\/\\\\\\___\\/\\\\\\__\\///\\\\\\\\\\/___\\/\\\\\\_ ")
+    napms(100)
+    scr.refresh()
+    scr.addstr(11, w//2 - 40, "        _\\///________\\///___\\////////\\//__\\///____\\///_____\\/////_____\\///__")
 
 
-import curses
-from curses import wrapper
-from curses import napms
+def main_menu(scr):
 
+    h, w = scr.getmaxyx()
 
-def main_title(stdscr):
-    stdscr.addstr("__/\\\\\\________/\\\\\\__________________________________________________        \n")
-    napms(100)
-    stdscr.refresh()
-    stdscr.addstr(" _\\/\\\\\\_______\\/\\\\\\__________________________________________________       \n")
-    napms(100)
-    stdscr.refresh()
-    stdscr.addstr("  _\\/\\\\\\_______\\/\\\\\\_____________________________________________/\\\\\\_      \n")
-    napms(100)
-    stdscr.refresh()
-    stdscr.addstr("   _\\/\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\__/\\\\\\\\\\\\\\\\\\_____/\\\\/\\\\\\\\\\\\_______/\\\\\\\\\\____\\///__     \n")
-    napms(100)
-    stdscr.refresh()
-    stdscr.addstr("    _\\/\\\\\\/////////\\\\\\_\\////////\\\\\\___\\/\\\\\\////\\\\\\____/\\\\\\///\\\\\\___/\\\\\\_    \n")
-    napms(100)
-    stdscr.refresh()
-    stdscr.addstr("     _\\/\\\\\\_______\/\\\\\\___/\\\\\\\\\\\\\\\\\\\\__\\/\\\\\\__\\//\\\\\\__/\\\\\\__\//\\\\\\_\\/\\\\\\_   \n")
-    napms(100)
-    stdscr.refresh()
-    stdscr.addstr("      _\\/\\\\\\_______\\/\\\\\\__/\\\\\\/////\\\\\\__\\/\\\\\\___\\/\\\\\\_\\//\\\\\\__/\\\\\\__\\/\\\\\\_  \n")
-    napms(100)
-    stdscr.refresh()
-    stdscr.addstr("       _\\/\\\\\\_______\\/\\\\\\_\\//\\\\\\\\\\\\\\\\/\\\\_\\/\\\\\\___\\/\\\\\\__\\///\\\\\\\\\\/___\\/\\\\\\_ \n")
-    napms(100)
-    stdscr.refresh()
-    stdscr.addstr("        _\\///________\\///___\\////////\\//__\\///____\\///_____\\/////_____\\///__\n\n")
+    menu = ["Play it super easy", "Play it easy",
+            "Play it casual", "Play it hard",
+            "Play it super hard", "Play it god-like",
+            "Play it Kratos-like"]
 
+    print_menu(scr, menu)
 
-def main_menu(stdscr):
-    stdscr.addstr("1. Play it super easy\n")
-    stdscr.addstr("2. Play it easy\n")
-    stdscr.addstr("3. Play it casual\n")
-    stdscr.addstr("4. Play it hard\n")
-    stdscr.addstr("5. Play it super hard\n")
-    stdscr.addstr("6. Play it god-like\n")
-    stdscr.addstr("7. Play it Kratos-like\n")
-    stdscr.addstr("\n")
-    stdscr.addstr("0. Exit\n")
-    stdscr.addstr("\n")
+    msg = "0. Exit"
+    scr.addstr(int(h/2) - len(menu) + 11, int(w/2) - len(msg), msg)
 
     while True:
-        stdscr.addstr("Make your selection: ")
-        user_choice = stdscr.getkey()
+        scr.addstr(int(h/2) - len(menu) + 13, 2, "Make your selection: ")
+        user_choice = scr.getkey()
 
         try:
             if user_choice in ("1", "2", "3", "4", "5", "6", "7"):
-                stdscr.clear()
-                hanoi_game(stdscr, user_choice)
+                scr.clear()
+                hanoi_game(scr, user_choice)
                 return 0
 
-            elif user_choice in ("n", "N", "0", "non", "Non", "non", "Non", "exit", "Exit"):
-                stdscr.clear()
+            elif user_choice in ("n", "N", "0", "non", "Non",
+                                 "non", "Non", "exit", "Exit"):
+                scr.clear()
                 sys.exit(0)
 
             else:
@@ -81,6 +85,14 @@ def translate_difficulty_level(user_input):
             "5": 8,
             "6": 10,
             "7": 15}[user_input]
+
+
+def remove_whitespace(user_input):
+
+    while " " in user_input:
+        user_input = user_input.replace(" ", "")
+
+    return user_input
 
 
 def endgame_menu(scr, towers, difficulty_level, moves_counter):
@@ -138,7 +150,7 @@ def endgame_menu(scr, towers, difficulty_level, moves_counter):
             pass
 
 
-def hanoi_game(stdscr, difficulty_level):
+def hanoi_game(scr, difficulty_level):
 
     towers_size = translate_difficulty_level(difficulty_level)
 
@@ -149,69 +161,82 @@ def hanoi_game(stdscr, difficulty_level):
     win_condition = [] + tower1
     moves_counter = 0
 
-    stdscr.clear()
-    stdscr.addstr("\n\n")
-    hanoi_ascii.print_towers(stdscr, towers)
-    stdscr.addstr("\n")
+    scr.clear()
+    scr.addstr("\n\n")
+    hanoi_ascii.print_towers(scr, towers)
+    scr.addstr("\n")
 
     while True:
 
         if towers[1] == win_condition:
-            return endgame_menu(stdscr, towers, difficulty_level, moves_counter)
+            return endgame_menu(scr, towers, difficulty_level, moves_counter)
 
-        stdscr.addstr("\n")
-        stdscr.addstr("Enter your movement: ")
-        curses.echo()
-        user_input = stdscr.getkey()
+        echo()
+        nocbreak()
+
+        scr.addstr("\n")
+        scr.addstr("Enter ring id: ")
+        user_input = scr.getstr().decode(encoding="utf-8")
+
+        noecho()
+        cbreak()
+
+        if user_input in ("q", "Q", "l", "L", "quit",
+                                "Quit", "exit", "Exit", "leave", "Leave"):
+            scr.clear()
+            sys.exit(0)
+
+        elif user_input in ("b", "B", "back", "Back", "r", "R", "return"):
+            scr.clear()
+            return 0
+
+        elif user_input == "s":
+            animation_speed = hanoi_solver.solution_animation_speed(difficulty_level)
+            hanoi_solver.play_solution(scr, towers_size, animation_speed)
+            scr.clear()
+            scr.addstr("\n\n")
+            hanoi_ascii.print_towers(scr, towers)
+            scr.addstr("\n")
+            continue
+
+        echo()
+        nocbreak()
+
+        scr.addstr("\n")
+        scr.addstr("Enter tower id: ")
+        targeted_tower = scr.getkey()
+
+        noecho()
+        cbreak()
+
+        res_list = [user_input, towers_manipulation.translate_tower_index(targeted_tower)]
+        flushinp()
 
         try:
-            if user_input in ("q", "Q", "l", "L", "quit",
-                                "Quit", "exit", "Exit", "leave", "Leave"):
-                stdscr.clear()
-                sys.exit(0)
-
-            elif user_input in ("b", "B", "back", "Back", "r", "R", "return"):
-                stdscr.clear()
-                return 0
-
-            elif user_input == "s":
-                animation_speed = hanoi_solver.solution_animation_speed(difficulty_level)
-                hanoi_solver.play_solution(stdscr, towers_size, animation_speed)
-                stdscr.clear()
-                stdscr.addstr("\n\n")
-                hanoi_ascii.print_towers(stdscr, towers)
-                stdscr.addstr("\n")
-                continue
-
-            targeted_tower = stdscr.getkey()
-            curses.noecho()
-            res_list = [user_input, towers_manipulation.translate_tower_index(targeted_tower)]
 
             if int(res_list[0]) in range(1, towers_size+1) and res_list[1] in (1, 2, 3):
                 moves_counter += 1
                 towers = towers_manipulation.move_ring(res_list, towers)
-                stdscr.clear()
-                stdscr.addstr("\n\n")
-                hanoi_ascii.print_towers(stdscr, towers)
-                stdscr.addstr("\n")
+                scr.clear()
+                scr.addstr("\n\n")
+                hanoi_ascii.print_towers(scr, towers)
+                scr.addstr("\n")
 
             else:
                 raise ValueError
 
         except ValueError:
-            stdscr.addstr("\nInvalid movement!")
+            flushinp()
+            scr.addstr("\nInvalid movement!")
 
 
-def main(stdscr):
+def main(scr):
 
-    stdscr.clear()
     while True:
-        stdscr.clear()
-        stdscr.addstr("\n")
-        main_title(stdscr)
-        stdscr.addstr("\n\n")
-        main_menu(stdscr)
-        stdscr.addstr("\n\n")
+        scr.erase()
+        scr.border('|', '|', '-', '-', '+', '+', '+', '+')
+        main_title(scr)
+        main_menu(scr)
 
-
+subprocess.CREATE_NEW_CONSOLE
 wrapper(main)

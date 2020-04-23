@@ -6,47 +6,44 @@ import os
 import hanoi_solver
 import hanoi_ascii
 import towers_manipulation
-from input_parsers import *
+
+import pygame
 
 
 def main_title():
-    w, h = os.get_terminal_size()
-    print(r"__/\\\________/\\\__________________________________________________        ".center(w))
+    print(r"__/\\\________/\\\__________________________________________________        ")
     time.sleep(0.05)
-    print(r" _\/\\\_______\/\\\__________________________________________________       ".center(w))
+    print(r" _\/\\\_______\/\\\__________________________________________________       ")
     time.sleep(0.05)
-    print(r"  _\/\\\_______\/\\\_____________________________________________/\\\_      ".center(w))
+    print(r"  _\/\\\_______\/\\\_____________________________________________/\\\_      ")
     time.sleep(0.05)
-    print(r"   _\/\\\\\\\\\\\\\\\__/\\\\\\\\\_____/\\/\\\\\\_______/\\\\\____\///__     ".center(w))
+    print(r"   _\/\\\\\\\\\\\\\\\__/\\\\\\\\\_____/\\/\\\\\\_______/\\\\\____\///__     ")
     time.sleep(0.05)
-    print(r"    _\/\\\/////////\\\_\////////\\\___\/\\\////\\\____/\\\///\\\___/\\\_    ".center(w))
+    print(r"    _\/\\\/////////\\\_\////////\\\___\/\\\////\\\____/\\\///\\\___/\\\_    ")
     time.sleep(0.05)
-    print(r"     _\/\\\_______\/\\\___/\\\\\\\\\\__\/\\\__\//\\\__/\\\__\//\\\_\/\\\_   ".center(w))
+    print(r"     _\/\\\_______\/\\\___/\\\\\\\\\\__\/\\\__\//\\\__/\\\__\//\\\_\/\\\_   ")
     time.sleep(0.05)
-    print(r"      _\/\\\_______\/\\\__/\\\/////\\\__\/\\\___\/\\\_\//\\\__/\\\__\/\\\_  ".center(w))
+    print(r"      _\/\\\_______\/\\\__/\\\/////\\\__\/\\\___\/\\\_\//\\\__/\\\__\/\\\_  ")
     time.sleep(0.05)
-    print(r"       _\/\\\_______\/\\\_\//\\\\\\\\/\\_\/\\\___\/\\\__\///\\\\\/___\/\\\_ ".center(w))
+    print(r"       _\/\\\_______\/\\\_\//\\\\\\\\/\\_\/\\\___\/\\\__\///\\\\\/___\/\\\_ ")
     time.sleep(0.05)
-    print(r"        _\///________\///___\////////\//__\///____\///_____\/////_____\///__".center(w))
+    print(r"        _\///________\///___\////////\//__\///____\///_____\/////_____\///__")
 
 
 def main_menu():
-    w, h = os.get_terminal_size()
-    vertical_align = "\n" * int(h/8)
-    print(vertical_align)
-    print("1. Play it super easy".center(w))
-    print("2. Play it easy".center(w))
-    print("3. Play it casual".center(w))
-    print("4. Play it hard".center(w))
-    print("5. Play it super hard".center(w))
-    print("6. Play it god-like".center(w))
-    print("7. Play it Kratos-like".center(w))
+    print("1. Play it super easy")
+    print("2. Play it easy")
+    print("3. Play it casual")
+    print("4. Play it hard")
+    print("5. Play it super hard")
+    print("6. Play it god-like")
+    print("7. Play it Kratos-like")
     print("")
-    print("0. Exit".center(w))
+    print("0. Exit")
     print("")
 
     while True:
-        user_choice = input()
+        user_choice = input("Make your selection: ")
 
         try:
             if user_choice in ("1", "2", "3", "4", "5", "6", "7"):
@@ -65,29 +62,43 @@ def main_menu():
             pass
 
 
+def translate_difficulty_level(user_input):
+
+    return {"1": 2,
+            "2": 3,
+            "3": 5,
+            "4": 6,
+            "5": 8,
+            "6": 10,
+            "7": 15}[user_input]
+
+
+def remove_whitespace(user_input):
+
+    while " " in user_input:
+        user_input = user_input.replace(" ", "")
+
+    return user_input
+
+
 def endgame_menu(towers, difficulty_level, moves_counter):
 
     towers_size = translate_difficulty_level(difficulty_level)
     expected_moves = 2**towers_size - 1
 
-    w, h = os.get_terminal_size()
-    vertical_align = "\n" * int(h/8)
-    print(vertical_align)
+    print("\n==========================================================")
+    print("============ Congratulations! You won :D !  ==============")
+    print("==========================================================\n")
 
-    print("==========================================================".center(w))
-    print("============ Congratulations! You won :D !  ==============".center(w))
-    print("==========================================================".center(w))
-
-    print("\n\n")
-    print(("You made "
+    print("You made "
           + str(moves_counter)
           + " moves out of the "
           + str(expected_moves)
-          + " minimum move! \n").center(w))
+          + " minimum move! \n")
 
     while True:
         try:
-            go_on = input("Do you want to play solution? ".center(w))
+            go_on = input("Do you want to play solution? ")
 
             if go_on in ("y", "Y", "o", "O", "yes", "Yes", "oui", "Oui"):
                 animation_speed = hanoi_solver.solution_animation_speed(difficulty_level)
@@ -106,9 +117,7 @@ def endgame_menu(towers, difficulty_level, moves_counter):
 
     while True:
         try:
-            os.system("clear")
-            print(vertical_align*2)
-            go_on = input("Do you want to go back to main menu? ".center(w))
+            go_on = input("\nDo you want to go back to main menu? ")
 
             if go_on in ("y", "Y", "o", "O", "yes", "Yes", "oui", "Oui"):
                 os.system("clear")
@@ -146,7 +155,7 @@ def hanoi_game(difficulty_level):
         if towers[1] == win_condition:
             return endgame_menu(towers, difficulty_level, moves_counter)
 
-        user_input = input()
+        user_input = input("Enter your movement: ")
 
         try:
             if user_input in ("q", "Q", "l", "L", "quit",
@@ -167,10 +176,10 @@ def hanoi_game(difficulty_level):
                 print("")
                 continue
 
-            elif len(user_input) < 2:
+            elif len(user_input) != 2:
                 raise ValueError
 
-            user_input = input_parse(user_input)
+            user_input = remove_whitespace(user_input)
             res_list = [user_input[0], towers_manipulation.translate_tower_index(user_input[1])]
 
             if int(res_list[0]) in range(1, towers_size+1) and res_list[1] in (1, 2, 3):
@@ -199,4 +208,6 @@ def main():
         print("\n")
 
 
+pygame.init()
+pygame.display.set_mode((1920, 1080))
 main()

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-import os
+import hanoi_solver
 
 
 def create_ring(size, max_size):
@@ -63,10 +63,6 @@ def print_floor(max_size):
 
 def print_towers(towers):
 
-    w, h = os.get_terminal_size()
-    vertical_align = "\n" * int(h/4)
-    print(vertical_align)
-
     nb_towers = len(towers)
     max_ring = len(towers[0])
     res_ring_line = []
@@ -78,7 +74,7 @@ def print_towers(towers):
             res_ring_line.extend(create_ring(towers[i][j], max_ring))
             res_ring_line.append(" ")
 
-        print("".join(res_ring_line).center(w))
+        print("".join(res_ring_line))
         res_ring_line = []
 
-    print("".join(print_floor(max_ring)).center(w))
+    print("".join(print_floor(max_ring)))
