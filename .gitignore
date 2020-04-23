@@ -2,3 +2,7 @@ ascii_arts.txt~
 .gitignore~
 *~
 __*
+learning_notes.*
+!learning_notes.pdf
+learning_notes/pylogo*
+learning_notes/learning_notes-blx*
