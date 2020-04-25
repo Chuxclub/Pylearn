@@ -1,7 +1,0 @@
-def print_tower(tower):
-
-    last_ring = len(tower)
-
-    for i in range(0, last_ring):
-        print(" " * (last_ring - i) + "".join(create_ring(tower[i])))
-
