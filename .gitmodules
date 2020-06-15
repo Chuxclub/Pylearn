@@ -1,0 +1,3 @@
+[submodule "algoviz"]
+	path = ./algoviz
+	url = https://github.com/Chuxclub/Pylearn
