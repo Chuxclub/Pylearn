@@ -126,7 +126,6 @@ def endgame_menu(towers, difficulty_level, moves_counter):
     print("============ Congratulations! You won :D !  ==============".center(w))
     print("==========================================================".center(w))
 
-    print("test")
     print("\n\n")
     print(("You made "
           + str(moves_counter)
